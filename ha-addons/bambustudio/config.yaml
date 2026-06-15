@@ -1,0 +1,59 @@
+name: "Bambu Studio"
+description: "Bambu Studio slicer – open-source, feature-rich slicing software for Bambu Lab printers, accessible via web browser."
+version: "1.0.0"
+slug: "bambustudio"
+init: false
+arch:
+  - amd64
+
+# Use the linuxserver image directly (x86-64 only, no arm64 support upstream)
+image: "lscr.io/linuxserver/bambustudio"
+
+# The addon will pull the upstream tag matching the addon version.
+# Override with a specific upstream tag by editing this file.
+
+homeassistant_api: false
+hassio_api: false
+hassio_role: default
+auth_api: false
+ingress: true
+ingress_port: 3001
+ingress_stream: true
+panel_icon: "mdi:printer-3d"
+panel_title: "Bambu Studio"
+
+# Ports are not exposed externally when using ingress.
+# If you want direct LAN access in addition to ingress, uncomment:
+# ports:
+#   3000/tcp: 3000
+#   3001/tcp: 3001
+# ports_description:
+#   3000/tcp: "HTTP (must be proxied)"
+#   3001/tcp: "HTTPS (main UI)"
+
+map:
+  - share:rw          # /share  – export/import .3mf files here
+  - config:rw         # /config – addon config area
+
+options:
+  dark_mode: true
+  password: ""
+  # Set a password to enable HTTP Basic Auth (leave blank to disable)
+
+schema:
+  dark_mode: bool
+  password: str
+
+environment:
+  PUID: "1000"
+  PGID: "1000"
+  TZ: "Europe/Brussels"
+
+tmpfs:
+  - /tmp
+  - /run
+
+# Bambu Studio desktop images need extra shared memory
+shm_size: "1gb"
+
+url: "https://bambulab.com/en/download/studio"
